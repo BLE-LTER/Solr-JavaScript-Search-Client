@@ -149,9 +149,22 @@ function showResultCount(total, limitPerPage, currentStartIndex) {
 }
 
 
+function show_loading(isLoading) {
+	var x = document.getElementById("loading-div");
+	if (isLoading) {
+		document.body.style.cursor = "wait";
+		x.style.display = "block";
+	}
+	else {
+		document.body.style.cursor = "default";
+		x.style.display = "none";
+	}
+}
+
+
 // Function to call if CORS request is successful
 function successCallback(headers, response) {
-    document.body.style.cursor = "default";
+    show_loading(false);
 
     // Write results to page
 	document.getElementById("searchResults").innerHTML = response;
@@ -181,7 +194,7 @@ function successCallback(headers, response) {
 
 // Function to call if CORS request fails
 function errorCallback() {
-    document.body.style.cursor = "default";
+    show_loading(false);
     alert("There was an error making the request.");
 }
 
@@ -211,7 +224,7 @@ function searchSolr(query, coreArea="", start=0) {
 	}
     var url = base + params + limit + start + area + query;
     showUrl(url);
-    document.body.style.cursor = "wait";
+    show_loading(true);
     makeCorsRequest(url, successCallback, errorCallback);
 }
 
