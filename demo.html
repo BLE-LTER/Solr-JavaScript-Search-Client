@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Demo Solr Search</title>
+	<meta charset="utf-8" /> 
+	<script src="https://use.fontawesome.com/a989b590e9.js"></script>
+	<link href="search.css" rel="stylesheet" type="text/css">
+	<script src="cors.js"></script>
+	<script src="solr.js"></script>
+</head>
+<body>
+	<p>Enter a search term, e.g., water. Datasets from the BNZ LTER site will be searched.</p>
+	<form id="dataSearchForm" name="dataSearchForm">
+		<label for="coreArea">LTER Core Area</label><br>
+	    <select name="coreArea" id="coreArea">
+		    <option value="any">Any</option>
+		    <option value="primary production">Primary Production</option>
+  		    <option value="organic matter">Organic Matter</option>
+		    <option value="disturbance">Disturbance</option>
+		    <option value="inorganic nutrients">Inorganic Nutrients</option>
+		    <option value="populations">Populations</option>
+	    </select><br><br>
+		<input class="search-input" name="q" placeholder="Enter search term" type="text">
+		<input type="submit" value="Search">
+	</form>
+	<p>Search URL will be written below:</p>
+	<p id="searchUrl"></p>
+	<p>Search results will be written below:</p>
+	<div class="resultCount" id="resultCount"></div>
+	<div id="searchResults"></div>
+	<div class="pagination" id="pagination"></div>
+</body>
+</html>
