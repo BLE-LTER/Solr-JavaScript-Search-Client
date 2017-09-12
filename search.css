@@ -12,6 +12,19 @@
     margin: auto;
 }
 
+.dataset-title a {
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+.dataset-title a:hover {
+    text-decoration: underline;
+}
+
+.dataset-author {
+    color: #808080;
+}
+
 .search-input {
     width: 250px;
 }

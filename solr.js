@@ -3,7 +3,7 @@
 "use strict";
 
 var SOLR_CONFIG = {
-	"server": "https://arcticdata.io/metacat/d1/mn/v2/query/solr?",  // Solr server
+    "server": "https://arcticdata.io/metacat/d1/mn/v2/query/solr?",  // Solr server
     "filter": "knb-lter-bnz",  // Filter results for an organization or user
     "limit": 10,  // Max number of results to retrieve per page
     "resultsElementId": "searchResults",  // Element to contain results
@@ -45,18 +45,17 @@ function parseSolrResults(resultJson) {
     var html = [];
     for (var i = 0; i < docs.length; i++) {
         var doc = docs[i];
-		var names = doc["origin"].join(", ") + " ";
-		var date = "(Published " + doc["datePublished"].slice(0, 10) + ")";
-		var title = "<strong>" + doc["title"].trim() + "</strong>";
-		var link = doc["resourceMap"][0];
-		if (link.slice(0, 4) == "doi:") {
-			link = "http://dx.doi.org/" + link.slice(4);
-		}
-		link = '<a rel="external" href="' + link + '" target="_blank">' + 
-		       'View Dataset <i class="fa fa-external-link" ' + 
-			   'aria-hidden="true"></i></a>';
-		var row = "<p>" + names + date + "<br>" + title + "<br>" + link + 
-				  "</p>";
+        var names = doc["origin"].join(", ") + " ";
+        var date = "(Published " + doc["datePublished"].slice(0, 10) + ")";
+        var link = doc["resourceMap"][0];
+        if (link.slice(0, 4) == "doi:") {
+            link = "http://dx.doi.org/" + link.slice(4);
+        }
+        var title = '<a rel="external" href="' + link + '" target="_blank">' + 
+                    doc["title"].trim() + '</a>';
+        var row = '<p><span class="dataset-title">' + title + 
+                  '</span><br><span class="dataset-author">' + names + date +
+                  '</span></p>';
         html.push(row);
     }
     if (html.length) {
@@ -150,15 +149,15 @@ function showResultCount(total, limitPerPage, currentStartIndex) {
 
 
 function show_loading(isLoading) {
-	var x = document.getElementById("loading-div");
-	if (isLoading) {
-		document.body.style.cursor = "wait";
-		x.style.display = "block";
-	}
-	else {
-		document.body.style.cursor = "default";
-		x.style.display = "none";
-	}
+    var x = document.getElementById("loading-div");
+    if (isLoading) {
+        document.body.style.cursor = "wait";
+        x.style.display = "block";
+    }
+    else {
+        document.body.style.cursor = "default";
+        x.style.display = "none";
+    }
 }
 
 
@@ -167,7 +166,7 @@ function successCallback(headers, response) {
     show_loading(false);
 
     // Write results to page
-	document.getElementById("searchResults").innerHTML = response;
+    document.getElementById("searchResults").innerHTML = response;
     var data = JSON.parse(response);
     var resultHtml = parseSolrResults(data);
     var elementId = SOLR_CONFIG["resultsElementId"];
@@ -210,18 +209,18 @@ function showUrl(url) {
 // Passes search URL and callbacks to CORS function
 function searchSolr(query, coreArea="", start=0) {
     var base = SOLR_CONFIG["server"];
-	var fields = ["title",
-				  "origin",
-				  "datePublished",
-				  "resourceMap"].toString();
+    var fields = ["title",
+                  "origin",
+                  "datePublished",
+                  "resourceMap"].toString();
     var params = "fl=" + fields + "&defType=edismax&wt=json";
     var limit = "&rows=" + SOLR_CONFIG["limit"];
     start = "&start=" + start;
-	query = "&q=" + SOLR_CONFIG["filter"] + " " + query;
-	var area = "&fq=keywords:" + coreArea;
-	if (coreArea == null || coreArea == "" || coreArea == "any") {
-		area = "";
-	}
+    query = "&q=" + SOLR_CONFIG["filter"] + " " + query;
+    var area = "&fq=keywords:" + coreArea;
+    if (coreArea == null || coreArea == "" || coreArea == "any") {
+        area = "";
+    }
     var url = base + params + limit + start + area + query;
     showUrl(url);
     show_loading(true);
@@ -237,15 +236,15 @@ window.onload = function() {
     if (query == null) {
         query = "";
     }
-	document.forms.dataSearchForm.q.value = query;
+    document.forms.dataSearchForm.q.value = query;
     var areas = document.getElementById("coreArea");
-	for (var i=0; i < areas.length; i++) {
-		if (coreArea == areas[i].value) {
-			areas[i].selected = true;
-			break;
-		}
-	}
-	
+    for (var i=0; i < areas.length; i++) {
+        if (coreArea == areas[i].value) {
+            areas[i].selected = true;
+            break;
+        }
+    }
+    
     if (!start) {
         start = 0;
     }
