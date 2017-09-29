@@ -26,19 +26,6 @@ function getParameterByName(name, url) {
 }
 
 
-// https://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
-function updateQueryStringParameter(uri, key, value) {
-  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-  var separator = uri.indexOf("?") !== -1 ? "&" : "?";
-  if (uri.match(re)) {
-    return uri.replace(re, "$1" + key + "=" + value + "$2");
-  }
-  else {
-    return uri + separator + key + "=" + value;
-  }
-}
-
-
 // Parse Solr search results into HTML
 function parseSolrResults(resultJson) {
     var docs = resultJson["response"]["docs"];
@@ -64,87 +51,6 @@ function parseSolrResults(resultJson) {
     else {
         return "<p>Your search returned no results.</p>";
     }
-}
-
-
-function makePageLink(currentUrl, currentStart, start, linkText) {
-    var uri = updateQueryStringParameter(currentUrl, "start", start);
-    var tagStart = '<a href="';
-    if (currentStart == start) {
-        uri = "#";
-        if (!linkText.toString().startsWith("&")) {
-            tagStart = '<a class="active" href="';
-        }
-    }
-    var link = tagStart + uri + '">' + linkText + '</a>';
-    return link;
-}
-
-
-// Creates links to additional pages of search results.
-// Requires a start URI argument indicating start index of search results
-// as passed to the server providing the search results.
-function makePageLinks(total, limit, showPages, currentStart) {
-    if (total <= limit) {
-        return "";
-    }
-
-    var currentUrl = window.location.href;
-    var numPages = Math.ceil(total / limit);
-    var currentPage = Math.floor(currentStart / limit) + 1;
-    var pagesLeftRight = Math.floor(showPages / 2);
-    var startPage = currentPage - pagesLeftRight;
-    var endPage = currentPage + pagesLeftRight;
-
-    if (endPage > numPages) {
-        endPage = numPages;
-        startPage = endPage - showPages + 1;
-    }
-    if (startPage <= 0) {
-        startPage = 1;
-        endPage = showPages;
-        if (endPage > numPages) {
-            endPage = numPages;
-        }
-    }
-
-    var link_list = [];
-    link_list.push(makePageLink(currentUrl, currentStart, 0, "&laquo;"));
-    for (var i = startPage; i <= endPage; i++) {
-        var startIndex = (i - 1) * limit;
-        link_list.push(makePageLink(currentUrl, currentStart, startIndex, i));
-    }
-    var lastIndex = (numPages - 1) * limit;
-    link_list.push(
-        makePageLink(currentUrl, currentStart, lastIndex, "&raquo;"));
-
-    return link_list.join("");
-}
-
-
-function showResultCount(total, limitPerPage, currentStartIndex) {
-    if (total == 0) {
-        return;
-    }
-
-    var s = "";
-    if (total > 1) {
-        s = "s";
-    }
-    if (total <= limitPerPage) {
-        var html = "<p>Found " + total + " result" + s + "</p>";
-    }
-    else {
-        var fromCount = currentStartIndex + 1;
-        var toCount = currentStartIndex + limitPerPage;
-        if (toCount > total) {
-            toCount = total;
-        }
-        var html = ("<p>Showing results " + fromCount + " to " + toCount + 
-                    " out of " + total + "</p>");
-    }
-    var element = document.getElementById(SOLR_CONFIG["countElementId"]);
-    element.innerHTML = html;
 }
 
 
@@ -183,11 +89,9 @@ function successCallback(headers, response) {
     var count = parseInt(data["response"]["numFound"]);
     var limit = parseInt(SOLR_CONFIG["limit"]);
     var showPages = parseInt(SOLR_CONFIG["showPages"]);
-    var pageLinkHtml = makePageLinks(count, limit, showPages, currentStart);
     var pageElementId = SOLR_CONFIG["pagesElementId"];
-    document.getElementById(pageElementId).innerHTML = pageLinkHtml;
-    
-    showResultCount(count, limit, currentStart);
+    showPageLinks(count, limit, showPages, currentStart, pageElementId);
+    showResultCount(count, limit, currentStart, SOLR_CONFIG["countElementId"]);
 }
 
 
