@@ -91,7 +91,8 @@ function successCallback(headers, response) {
     var showPages = parseInt(SOLR_CONFIG["showPages"]);
     var pageElementId = SOLR_CONFIG["pagesElementId"];
     showPageLinks(count, limit, showPages, currentStart, pageElementId);
-    showResultCount(count, limit, currentStart, SOLR_CONFIG["countElementId"]);
+    var query = getParameterByName("q");
+    showResultCount(query, count, limit, currentStart, SOLR_CONFIG["countElementId"]);
 }
 
 
