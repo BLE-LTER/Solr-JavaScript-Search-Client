@@ -1,6 +1,8 @@
 # Solr-JavaScript-Search-Client
 Example HTML, CSS, and JavaScript for searching for items in a Solr repository
 
+[See a live demo at RawGit](https://cdn.rawgit.com/twhiteaker/Solr-JavaScript-Search-Client/3ef984a2/demo.html)
+
 ## Motivation
 
 On my Long Term Ecological Research (LTER) project's static HTML website, I needed a search interface into my datasets archived at the [Arctic Data Center](https://arcticdata.io/), whose search API uses [Solr](https://lucene.apache.org/solr/).  LTER websites must support searching by term as well as browsing by LTER core area. I needed pagination since thousands of results could be returned.
