@@ -122,11 +122,10 @@ function searchSolr(query, coreArea="", start=0) {
     var limit = "&rows=" + SOLR_CONFIG["limit"];
     start = "&start=" + start;
     query = "&q=" + SOLR_CONFIG["filter"] + " " + query;
-    var area = "&fq=keywords:" + coreArea;
-    if (coreArea == null || coreArea == "" || coreArea == "any") {
-        area = "";
+    if (coreArea && coreArea !== "any") {
+        params += '&fq=keywords:"' + coreArea + '"';
     }
-    var url = base + params + limit + start + area + query;
+    var url = base + params + limit + start + query;
     showUrl(url);
     show_loading(true);
     makeCorsRequest(url, successCallback, errorCallback);
@@ -138,10 +137,11 @@ window.onload = function() {
     var query = getParameterByName("q");
     var start = getParameterByName("start");
     var coreArea = getParameterByName("coreArea");
-    if (query == null) {
-        query = "";
-    }
     document.forms.dataSearchForm.q.value = query;
+    if (!(query && query.trim())) {
+        query = "";  // default for empty query
+    }
+
     var areas = document.getElementById("coreArea");
     for (var i=0; i < areas.length; i++) {
         if (coreArea == areas[i].value) {
