@@ -1,7 +1,7 @@
 # Solr-JavaScript-Search-Client
 Example HTML, CSS, and JavaScript for searching for items in a Solr repository
 
-[See a live demo at RawGit](https://cdn.rawgit.com/twhiteaker/Solr-JavaScript-Search-Client/68abcb81/demo.html)
+[See a live demo at RawGit](https://cdn.rawgit.com/twhiteaker/Solr-JavaScript-Search-Client/ae8c69d4/demo.html)
 
 ## Motivation
 
