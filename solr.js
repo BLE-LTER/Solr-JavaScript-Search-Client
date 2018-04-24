@@ -35,7 +35,7 @@ function parseSolrResults(resultJson) {
         var names = doc["origin"].join(", ") + " ";
         var date = "(Published " + doc["datePublished"].slice(0, 10) + ")";
         var link = doc["resourceMap"][0];
-        if (link.slice(0, 4) == "doi:") {
+        if (link.slice(0, 4) === "doi:") {
             link = "http://dx.doi.org/" + link.slice(4);
         }
         var title = '<a rel="external" href="' + link + '" target="_blank">' + 
@@ -115,6 +115,7 @@ function errorCallback() {
 
 // Writes CORS request URL to the page so user can see it
 function showUrl(url) {
+    url = encodeURI(url);
     var txt = '<a href="' + url + '" target="_blank">' + url + '</a>';
     var element = document.getElementById(SOLR_CONFIG["urlElementId"]);
     element.innerHTML = txt;
