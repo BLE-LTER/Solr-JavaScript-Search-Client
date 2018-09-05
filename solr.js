@@ -123,7 +123,7 @@ function showUrl(url) {
 
 
 // Passes search URL and callbacks to CORS function
-function searchSolr(query, coreArea="", start=0) {
+function searchSolr(query, coreArea, start) {
     var base = SOLR_CONFIG["server"];
     var fields = ["title",
                   "origin",
@@ -131,6 +131,7 @@ function searchSolr(query, coreArea="", start=0) {
                   "resourceMap"].toString();
     var params = "fl=" + fields + "&defType=edismax&wt=json";
     var limit = "&rows=" + SOLR_CONFIG["limit"];
+    if (start === undefined) start = "0";
     start = "&start=" + start;
     query = "&q=" + SOLR_CONFIG["filter"] + " " + query;
     if (coreArea && coreArea !== "any") {
