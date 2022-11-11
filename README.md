@@ -1,5 +1,7 @@
 # Solr-JavaScript-Search-Client
 
+[![DOI](https://zenodo.org/badge/102152761.svg)](https://zenodo.org/badge/latestdoi/102152761)
+
 Example HTML, CSS, and JavaScript for searching for items in a Solr repository
 
 [Live demo](https://ble-lter.github.io/Solr-JavaScript-Search-Client/demo.html)
